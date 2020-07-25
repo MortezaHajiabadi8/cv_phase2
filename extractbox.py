@@ -50,19 +50,18 @@ def writecells(pic, detected_form, width, height):
     global count
     form1 = re.match(r'/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset/[0-9]+_1[a-d]', pic)
     form2 = re.match(r'/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset/[0-9]+_2[a-d]', pic)
-    w = int(width/14)
-    h = int(height/21)
+    w = int(width/14) 
+    h = int(height/21) 
     dest_points = np.array([(0,0),(w,0),(w,h),(0,h)], dtype=np.float32)
     #x,y is the coordinate of topleft corner of each cell
     x = 0 
     y = 0
     form1_labels = ['0', '100'] + [str(i+1) for i in range(17)] + ['200', '300']
     form2_labels = ['400', '500'] + [str(i+1) for i in range(17,32)] + ['600', '700', '800', '900']
-    os.chdir('/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset')
     for j in range(21):
         for i in range(14):
             if not((i == 0 or i == 1 or i == 12 or i == 13) and (j == 0 or j == 1 or j == 19 or j == 20)):
-                sourc_points = np.array([(x+i*w,y+j*h), (x+(i+1)*w,y+j*h), (x+(i+1)*w,y+(j+1)*h), (x+i*w,y+(j+1)*h)], dtype=np.float32)
+                sourc_points = np.array([((x+1)+i*w,(y+1)+j*h), ((x+1)+(i+1)*w,(y+1)+j*h), ((x+1)+(i+1)*w,(y+1)+(j+1)*h), ((x+1)+i*w,(y+1)+(j+1)*h)], dtype=np.float32)
                 H = cv2.getPerspectiveTransform(sourc_points, dest_points)
                 cell = cv2.warpPerspective(detected_form,H,  (h,w))
                 if form1:
@@ -70,7 +69,7 @@ def writecells(pic, detected_form, width, height):
                     cv2.imwrite(str(count) + '.jpg' , cell)            
                     count += 1
                 elif form2:
-                    os.chdir('/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset/' + form2_labels[j]+ '/')
+                    os.chdir('/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset/' + form2_labels[j] + '/')
                     cv2.imwrite(str(count) + '.jpg' , cell)            
                     count += 1
 
@@ -83,10 +82,7 @@ def main():
         detected_form = detectForm(I, source_points, dest_points, height, width)
         writecells(pic, detected_form, width, height)
 
-   
     
-        
-  
     
     
 if __name__ == '__main__':

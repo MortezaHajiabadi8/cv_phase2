@@ -64,6 +64,12 @@ def writecells(pic, detected_form, width, height):
                 sourc_points = np.array([((x+1)+i*w,(y+1)+j*h), ((x+1)+(i+1)*w,(y+1)+j*h), ((x+1)+(i+1)*w,(y+1)+(j+1)*h), ((x+1)+i*w,(y+1)+(j+1)*h)], dtype=np.float32)
                 H = cv2.getPerspectiveTransform(sourc_points, dest_points)
                 cell = cv2.warpPerspective(detected_form,H,  (h,w))
+                width = 64
+                height = 64
+                dsize = (width, height)
+                temp = cell.copy()
+                temp = temp[6:58,6:58]
+                cell = cv2.resize(temp, dsize)
                 if form1:
                     os.chdir('/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset/' + form1_labels[j] + '/')
                     cv2.imwrite(str(count) + '.jpg' , cell)            
@@ -74,7 +80,7 @@ def writecells(pic, detected_form, width, height):
                     count += 1
 
 def main():
-    for pic in glob('/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset/*.jp*'):
+    for pic in glob('/home/mortezahajiabadi/Morteza/Uni/term6/ComputerVision/phase2/dataset/*.*'):
         I = cv2.imread(pic)
         markerCorners, markerIds = detectMarkers(I)
         source_points = compute_source_points(markerCorners, markerIds)

@@ -5,7 +5,8 @@ import os
 import cv2
 import numpy as np
 from keras.preprocessing.image import load_img, img_to_array
-import re
+from sklearn.model_selection import train_test_split
+from keras.utils import to_categorical
 
 num_classes = 32
 EPOCHS = 25
@@ -28,3 +29,17 @@ for train_dir in tqdm(train_dirs):
         label = imgPath.split(os.path.sep)[-2]
         label = int(label)
         labels.append(label)
+        
+
+
+data = np.array(data, dtype=np.float) / 255.
+labels = np.array(labels)
+
+train_input, valid_input, train_target, valid_target = train_test_split(data,
+                                                                        labels,
+                                                                        test_size=0.25,
+                                                                        random_state=123)
+
+
+
+

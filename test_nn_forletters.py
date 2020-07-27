@@ -34,5 +34,7 @@ for i, testPath in enumerate(testPaths):
     # plt.imshow(output, cmap="gray")
     # plt.axis("off")
     # plt.title("{}: {:.2f}%".format(label, proba * 100))
+    print("{}: {:.2f}%".format(label, proba * 100))
     cv2.imshow(str(label), output)
     cv2.waitKey()
+    cv2.destroyAllWindows()

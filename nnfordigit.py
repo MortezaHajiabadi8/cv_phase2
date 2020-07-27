@@ -23,6 +23,7 @@ def build_model(inputs):
     x = MaxPool2D(pool_size=(2, 2), strides=(2, 2))(x)
 
     x = Conv2D(filters=50, kernel_size=(5, 5), padding="same", activation="relu", kernel_initializer='he_normal')(x)
+    x = Conv2D(filters=50, kernel_size=(5, 5), padding="same", activation="relu", kernel_initializer='he_normal')(x)
     x = MaxPool2D(pool_size=(2, 2), strides=(2, 2))(x) 
 
     x = Flatten()(x)
@@ -34,12 +35,14 @@ def build_model(inputs):
   
     return model
 
-num_classes = 32
+
+
+num_classes = 10
 EPOCHS = 5
 BS = 32
 
-train_dirs = glob.glob("./dataset/letters/*")
-train_dirs.sort(key = lambda x: int(x.rsplit('/',1)[1]))
+train_dirs = glob.glob("./dataset/digits/*")
+train_dirs.sort()
 
 
 data = []
@@ -77,7 +80,7 @@ model = build_model(input)
 opt = Adam()
 model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["acc"])
 
-checkpoint = ModelCheckpoint(filepath="letter_model.h5",
+checkpoint = ModelCheckpoint(filepath="digit_model.h5",
                              monitor="val_acc",
                              verbose=1,
                              save_best_only=True)
@@ -98,10 +101,9 @@ plt.xlabel("Epochs")
 plt.ylabel("loss/accuracy")
 plt.title("training plot")
 plt.legend(loc="center right")
-plt.savefig("training_plot.png")
+plt.savefig("digit_training_plot.png")
 
 
-model.load_weights("letter_model.h5")
-model.save('letter_model')
-
+model.load_weights("digit_model.h5")
+model.save('digit_model')
 

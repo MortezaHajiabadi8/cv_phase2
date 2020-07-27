@@ -1,4 +1,4 @@
-import keras
+import keras    
 import glob
 from tqdm import tqdm
 import os
@@ -35,7 +35,7 @@ def build_model(inputs):
     return model
 
 num_classes = 32
-EPOCHS = 25
+EPOCHS = 5
 BS = 32
 
 train_dirs = glob.glob("./dataset/letters/*")
@@ -104,7 +104,8 @@ plt.savefig("training_plot.png")
 model.load_weights("model.h5")
 testPaths = glob.glob("./dataset/letter_sample_test/*.jpg")
 testPaths.sort()
-plt.figure(figsize=(10, 10))
+model.save('my_model')
+
 for i, testPath in enumerate(testPaths):
     image = load_img(testPath, target_size=(28, 28), grayscale=True)
     image = img_to_array(image) / 255.
@@ -114,8 +115,9 @@ for i, testPath in enumerate(testPaths):
     label = np.argmax(predictions)
     proba = np.max(predictions)
     output = cv2.resize(orig_img, (400, 400))
-    plt.subplot(3, 3, i + 1)
-    plt.imshow(output, cmap="gray")
-    plt.axis("off")
-    plt.title("{}: {:.2f}%".format(label, proba * 100))
-
+    # plt.subplot(3, 3, i + 1)
+    # plt.imshow(output, cmap="gray")
+    # plt.axis("off")
+    # plt.title("{}: {:.2f}%".format(label, proba * 100))
+    cv2.imshow(label, output)
+    cv2.waitkey()

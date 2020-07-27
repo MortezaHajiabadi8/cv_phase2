@@ -8,12 +8,15 @@ from keras.preprocessing.image import load_img, img_to_array
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 from keras.preprocessing.image import ImageDataGenerator
-from keras.layers import Conv2D, MaxPool2D, Flatten, Dense
+from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, ZeroPadding2D, Convolution2D, MaxPooling2D, Dropout
 from keras.models import Model
 from keras.layers import Input
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
 from matplotlib import pyplot as plt
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 def build_model(inputs):
@@ -37,11 +40,12 @@ def build_model(inputs):
 
 
 
+
 num_classes = 10
-EPOCHS = 5
+EPOCHS = 15
 BS = 32
 
-train_dirs = glob.glob("./dataset/digits/*")
+train_dirs = glob.glob("./dataset/digit_folders/*")
 train_dirs.sort()
 
 
@@ -106,4 +110,3 @@ plt.savefig("digit_training_plot.png")
 
 model.load_weights("digit_model.h5")
 model.save('digit_model')
-
